@@ -51,7 +51,7 @@ app.get("/api/users/:_id/logs", function (req, res)
           logs = logs.slice(0, req.query.limit);
         }
       }
-      res.json({_id: allExercise[0]._id, username: allExercise[0].username, count: logs.length, log: logs});
+      res.json({username: allExercise[0].username, count: logs.length, _id: allExercise[0]._id, log: logs});
     }
     else
     {
@@ -85,7 +85,7 @@ app.post("/api/users/:_id/exercises", jsonParser, function (req, res)
         if ((req.body.description != undefined && req.body.description != "") && (req.body.duration != undefined && !isNaN(parseInt(req.body.duration))))
         {
           let id = users.findIndex(e => e._id == req.params._id);
-          let exercise = {username: users[id].username, description: req.body.description, duration: req.body.duration, date: req.body.date != undefined ? req.body.date : new Date().toDateString(), _id: users[id]._id};
+          let exercise = {username: users[id].username, description: req.body.description, duration: parseInt(req.body.duration), date: req.body.date == "" || req.body.date == " " || req.body.date == undefined ? new Date().toDateString() : new Date(req.body.date).toDateString(), _id: users[id]._id};
           exercises.push(exercise);
           res.json(exercise);
         }
